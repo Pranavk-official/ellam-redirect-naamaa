@@ -1,35 +1,108 @@
-# ellam-redirect-naamaa
+# ellam → naamaa
 
-Landing microsite: **ellam.in has moved to naamaa.in**. One page — hero + a
-searchable directory of the temples & services captured from ellam.in, each
-linking to `naamaa.in/<slug>`.
+The migration site for **ellam.in**. It announces that Ellam has moved to
+**naamaa.in** (Parinaamaa) and helps people find each temple / store / service
+on the new platform.
+
+Ellam was a Kerala temple-and-services booking app; it has been folded into
+Parinaamaa and its backend is gone. This small, mostly-static Next.js site
+replaces it at the ellam.in domain. Onboarding to naamaa.in is **phased** —
+listings go live over time.
+
+## What it does
+
+- **`/`** — a full-screen "ellam.in has moved to naamaa.in" notice, plus a
+  searchable / filterable / sortable **directory** of everything that was on
+  ellam.in. Onboarded listings link straight to `naamaa.in/<slug>`; the rest
+  show **Coming soon**.
+- **Any other path** — a branded **404** page (`not-found.tsx`). ellam.in never
+  exposed slug-based URLs (it was a client app making internal API calls), so
+  there are no deep links to preserve — unmatched URLs get the 404, not a
+  redirect. That's why there is no `[...slug]` route.
+
+## Stack
+
+Next.js 16 (App Router, Turbopack) · React 19 · Tailwind v4 · Motion · tsParticles
+(sparkles) · Lenis (smooth scroll). Package manager: **Bun**.
 
 ## Develop
 
 ```bash
 bun install
-bun dev        # http://localhost:3000
+cp .env.example .env    # then adjust values
+bun dev                 # http://localhost:3000
+bun run build
+bun run start
 ```
 
-`bun build` / `bun start` to build and serve. `bun lint` to lint.
+## Project layout
 
-## Config
+```
+src/
+  app/
+    layout.tsx           root layout — SEO metadata, fonts, smooth scroll
+    page.tsx             landing = <Hero/> + <Directory/>
+    not-found.tsx        404 for any unmatched path (retired-domain notice)
+    error.tsx            runtime error boundary  (client)
+    global-error.tsx     root-layout error fallback (client, self-contained)
+    opengraph-image.tsx  generated link-preview image (next/og)
+    icon.svg             favicon (gold sparkle)
+    globals.css          Tailwind v4 theme tokens + Lenis base css
+  components/
+    hero.tsx             full-screen hero — sparkles overlay, CTAs, scroll cue
+    directory.tsx        searchable / filterable / sortable listing directory
+    ui/                  sparkles, smooth-scroll (Lenis), scroll-text (reveal)
+  data/
+    catalogue.ts         source of truth — every listing, grouped by category
+  lib/
+    utils.ts             cn()
+```
 
-`.env`:
+## The data — how to onboard a listing
 
-| Var | Effect |
-|-----|--------|
-| `NEXT_PUBLIC_OPEN_IN_NEW_TAB` | `"true"` opens naamaa.in links in a new tab |
+Everything lives in [`src/data/catalogue.ts`](src/data/catalogue.ts), grouped by
+category (`Prarthana`, `Ellam Stores`, `Parking`). Each entry:
 
-## Catalogue
+```ts
+{ name: "Edavetty Sree Krishna Swami Temple", slug: "edavetty-temple", location: "Edavetty", onboarded: true }
+```
 
-Listings live in `src/data/catalogue.ts`, grouped by category. Each row links to
-`naamaa.in/<slug>`. As a listing goes live on naamaa, set its real `slug` and
-`onboarded: true`; until then `slug` is a placeholder and the row shows
-"Coming soon".
+- **`slug`** — the naamaa subdomain. The directory links to `naamaa.in/<slug>`.
+- **`onboarded: true`** — it is live on naamaa.in. Onboarded rows are clickable;
+  everything else renders **Coming soon**.
 
-## Stack
+naamaa slugs are **not** derivable from the old ellam names (e.g. the ellam
+domain `edavettykrishnaswami` became `edavetty-temple`), so when a listing goes
+live, set its real `slug` by hand and add `onboarded: true`. That's the only
+edit needed — `listings` (the flat, category-tagged view the directory uses) is
+derived automatically.
 
-Next.js 16 (App Router) · React 19 · Tailwind 4 · motion · lenis · tsparticles.
+> The catalogue was captured from the live ellam.in API
+> (`prod.ellam.in/consumers/<worship|open-kitchen|parking>`) before shutdown.
 
-> Next.js here ships breaking changes vs. common knowledge — see `AGENTS.md`.
+## Environment variables
+
+`.env` is git-ignored; [`.env.example`](.env.example) is the committed
+reference. Set these locally **and** in your deploy environment.
+
+| Variable                     | Purpose                                                                                              |
+| ---------------------------- | --------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`       | Public URL the site is served from. Builds absolute OG / link-preview image URLs — **must** match the host or previews break. Change to `https://ellam.in` on cutover. |
+| `NEXT_PUBLIC_OPEN_IN_NEW_TAB`| `true` opens naamaa listing links in a new tab.                                                      |
+
+## Deploy
+
+The site's job is to catch **ellam.in** traffic, so point **`ellam.in`** (apex
++ `www`) DNS at this deployment — that is what makes old links land here.
+`ellam.naamaa.in` can be an alias / canonical host, but it isn't what catches
+anything (nobody has `ellam.naamaa.in/...` links). The app never reads the
+request host, so the same build works from any hostname.
+
+Checklist:
+
+1. Set `NEXT_PUBLIC_SITE_URL` to the **actual serving host** (previews depend on
+   it). Set the other env vars too — `.env` is not committed.
+2. naamaa.in must be live for the onboarded links to resolve.
+3. Link previews are cached by scrapers — after deploying, re-scrape via the
+   [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/),
+   X Card Validator, or LinkedIn Post Inspector to refresh them.

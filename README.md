@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ellam-redirect-naamaa
 
-## Getting Started
+Landing microsite: **ellam.in has moved to naamaa.in**. One page — hero + a
+searchable directory of the temples & services captured from ellam.in, each
+linking to `naamaa.in/<slug>`.
 
-First, run the development server:
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
+bun dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`bun build` / `bun start` to build and serve. `bun lint` to lint.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Config
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`.env`:
 
-## Learn More
+| Var | Effect |
+|-----|--------|
+| `NEXT_PUBLIC_OPEN_IN_NEW_TAB` | `"true"` opens naamaa.in links in a new tab |
 
-To learn more about Next.js, take a look at the following resources:
+## Catalogue
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Listings live in `src/data/catalogue.ts`, grouped by category. Each row links to
+`naamaa.in/<slug>`. As a listing goes live on naamaa, set its real `slug` and
+`onboarded: true`; until then `slug` is a placeholder and the row shows
+"Coming soon".
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Stack
 
-## Deploy on Vercel
+Next.js 16 (App Router) · React 19 · Tailwind 4 · motion · lenis · tsparticles.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> Next.js here ships breaking changes vs. common knowledge — see `AGENTS.md`.

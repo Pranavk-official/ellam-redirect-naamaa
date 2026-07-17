@@ -20,10 +20,11 @@ const description =
 
 // Absolute base for OG / link-preview image URLs. It MUST match the host that
 // actually serves the site, or scrapers fetch og:image from the wrong origin
-// and no preview shows. Set NEXT_PUBLIC_SITE_URL per deployment; Vercel's
-// production URL is used automatically when it isn't set.
+// and no preview shows. On Vercel this auto-resolves to the production URL
+// (including a custom domain once added), so it usually needs no config. Set
+// NEXT_PUBLIC_SITE_URL only to override (e.g. non-Vercel hosts).
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
+  process.env.NEXT_PUBLIC_SITE_URL ||
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : "https://ellam.in");

@@ -87,7 +87,7 @@ reference. Set these locally **and** in your deploy environment.
 
 | Variable                     | Purpose                                                                                              |
 | ---------------------------- | --------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`       | Public URL the site is served from. Builds absolute OG / link-preview image URLs — **must** match the host or previews break. Change to `https://ellam.in` on cutover. |
+| `NEXT_PUBLIC_SITE_URL`       | Absolute URL the site is served from; builds OG / link-preview image URLs. **On Vercel, leave it unset** — it auto-detects the production URL (and a custom domain once added). Set only to override (e.g. non-Vercel hosts). |
 | `NEXT_PUBLIC_OPEN_IN_NEW_TAB`| `true` opens naamaa listing links in a new tab.                                                      |
 
 ## Deploy
@@ -100,8 +100,10 @@ request host, so the same build works from any hostname.
 
 Checklist:
 
-1. Set `NEXT_PUBLIC_SITE_URL` to the **actual serving host** (previews depend on
-   it). Set the other env vars too — `.env` is not committed.
+1. **On Vercel**, `og:image` URLs auto-resolve to the deployment's production
+   URL (and your custom domain once added) — no `NEXT_PUBLIC_SITE_URL` needed.
+   Set `NEXT_PUBLIC_OPEN_IN_NEW_TAB` if you want it (`.env` isn't committed). On
+   non-Vercel hosts, set `NEXT_PUBLIC_SITE_URL` to the serving host.
 2. naamaa.in must be live for the onboarded links to resolve.
 3. Link previews are cached by scrapers — after deploying, re-scrape via the
    [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/),

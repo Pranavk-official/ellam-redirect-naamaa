@@ -63,20 +63,34 @@ export const Directory = () => {
         {`Everything from ellam.in is moving to naamaa.in — ${LIVE} of ${listings.length} live now. Search or sort to find yours.`}
       </p>
 
-      <label className="mt-6 block">
-        <span className="sr-only">Search temples and services</span>
+      <div className="relative mt-6">
+        <label htmlFor="dir-search" className="sr-only">
+          Search temples and services
+        </label>
+        <SearchIcon />
         <input
+          id="dir-search"
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by name or place…"
           autoComplete="off"
-          className="w-full rounded-full border border-border bg-transparent px-5 py-3 text-base text-foreground outline-none placeholder:text-muted focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/40"
+          className="w-full rounded-full border border-border bg-transparent py-3 pl-12 pr-11 text-base text-foreground outline-none placeholder:text-muted focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/40"
         />
-      </label>
+        {query && (
+          <button
+            type="button"
+            onClick={() => setQuery("")}
+            aria-label="Clear search"
+            className="absolute top-1/2 right-3 -translate-y-1/2 rounded-full p-1.5 text-muted transition-colors hover:bg-border/60 hover:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+          >
+            <CloseIcon />
+          </button>
+        )}
+      </div>
 
       {/* Filters + sort */}
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div
           className="flex flex-wrap gap-2"
           role="group"
@@ -96,7 +110,10 @@ export const Directory = () => {
               <Count>{c.count}</Count>
             </FilterPill>
           ))}
-          <span aria-hidden className="mx-1 h-6 w-px self-center bg-border" />
+          <span
+            aria-hidden
+            className="mx-1 hidden h-6 w-px self-center bg-border sm:block"
+          />
           <FilterPill
             active={onlyOnboarded}
             onClick={() => setOnlyOnboarded((v) => !v)}
@@ -106,18 +123,25 @@ export const Directory = () => {
           </FilterPill>
         </div>
 
-        <label className="flex items-center gap-2 text-sm text-muted">
+        <label className="flex items-center gap-2 text-sm text-muted sm:shrink-0">
           <span>Sort</span>
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value as SortKey)}
-            className="cursor-pointer rounded-full border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:outline-none"
-          >
-            <option value="name-asc">Name (A–Z)</option>
-            <option value="name-desc">Name (Z–A)</option>
-          </select>
+          <div className="relative flex-1 sm:flex-none">
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as SortKey)}
+              className="w-full cursor-pointer appearance-none rounded-full border border-border bg-background py-2 pr-9 pl-4 text-sm font-medium text-foreground focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:outline-none sm:w-auto"
+            >
+              <option value="name-asc">Name (A–Z)</option>
+              <option value="name-desc">Name (Z–A)</option>
+            </select>
+            <ChevronIcon />
+          </div>
         </label>
       </div>
+
+      <p className="mt-4 text-xs text-muted" aria-live="polite">
+        {`${results.length} ${results.length === 1 ? "result" : "results"}`}
+      </p>
 
       {results.length === 0 ? (
         <p className="mt-6 text-sm text-muted">
@@ -198,7 +222,7 @@ const FilterPill = ({
     type="button"
     onClick={onClick}
     aria-pressed={active}
-    className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-1.5 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none ${
+    className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none ${
       active
         ? "border-accent bg-accent/10 text-accent"
         : "border-border text-muted hover:border-foreground/30 hover:text-foreground"
@@ -210,4 +234,50 @@ const FilterPill = ({
 
 const Count = ({ children }: { children: React.ReactNode }) => (
   <span className="text-xs opacity-60">{children}</span>
+);
+
+const SearchIcon = () => (
+  <svg
+    aria-hidden
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-muted"
+  >
+    <circle cx="11" cy="11" r="7" />
+    <path d="m21 21-4.3-4.3" />
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg
+    aria-hidden
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="h-4 w-4"
+  >
+    <path d="M18 6 6 18M6 6l12 12" />
+  </svg>
+);
+
+const ChevronIcon = () => (
+  <svg
+    aria-hidden
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-muted"
+  >
+    <path d="m6 9 6 6 6-6" />
+  </svg>
 );

@@ -16,7 +16,7 @@ const merriweather = Merriweather({
 
 const title = "ellam.in has moved to naamaa.in";
 const description =
-  "Ellam is now part of Parinaamaa. Every temple and service on ellam.in has migrated to naamaa.in — old links redirect automatically.";
+  "Ellam is now part of Parinaamaa. Every temple and service on ellam.in is moving to naamaa.in — find yours.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ellam.in"),

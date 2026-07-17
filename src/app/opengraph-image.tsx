@@ -54,8 +54,8 @@ const OpengraphImage = () =>
 
         {/* Subtitle */}
         <div style={{ display: "flex", fontSize: 34, color: "#a1a1aa", marginTop: 36 }}>
-          Every temple &amp; service has migrated — old links redirect
-          automatically.
+          Ellam is now part of Parinaamaa. Find your temple or service on
+          naamaa.in.
         </div>
       </div>
     ),

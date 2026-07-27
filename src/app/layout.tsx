@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Merriweather } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
+import { Sparkles } from "@/components/ui/sparkles";
 import { newSiteUrl, siteUrl } from "@/lib/site";
 
 const geistSans = Geist({
@@ -79,7 +80,24 @@ const RootLayout = ({
     className={`${geistSans.variable} ${merriweather.variable} h-full antialiased`}
   >
     <body className="min-h-full flex flex-col">
-      <SmoothScroll>{children}</SmoothScroll>
+      {/* Sparkles behind the whole site: fixed to the viewport so it keeps
+          covering the page as you scroll. Content sits above it via z-10. */}
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-50">
+        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-[radial-gradient(ellipse_at_bottom,rgba(224,181,60,0.14),transparent_70%)]" />
+        <Sparkles
+          density={650}
+          speed={1}
+          size={1.1}
+          direction="top"
+          opacitySpeed={2}
+          color="#e0b53c"
+          className="absolute inset-0"
+        />
+      </div>
+
+      <div className="relative z-10 flex flex-1 flex-col">
+        <SmoothScroll>{children}</SmoothScroll>
+      </div>
     </body>
   </html>
 );

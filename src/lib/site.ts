@@ -14,3 +14,12 @@ export const siteUrl =
 
 // Where everything moved to. Canonical target and JSON-LD publisher.
 export const newSiteUrl = "https://naamaa.in";
+
+// Mirrored from naamaa.in/contact — keep in sync if that page changes.
+export const contact = {
+  email: "info@parinaamaa.in",
+  phone: "+91 80861 86688",
+  phoneHref: "tel:+918086186688",
+  hours: "Mon–Sat, 10 AM – 6 PM IST. WhatsApp also available.",
+  enterpriseUrl: "https://enterprise.naamaa.in",
+};

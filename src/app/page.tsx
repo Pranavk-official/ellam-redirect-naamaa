@@ -1,8 +1,31 @@
 import { Hero } from "@/components/hero";
 import { Directory } from "@/components/directory";
+import { newSiteUrl, siteUrl } from "@/lib/site";
+
+// Tells search engines the site moved, and who runs the new one.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Ellam → Naamaa",
+  url: siteUrl,
+  description:
+    "Ellam is now part of Parinaamaa. Every temple and service on ellam.in is moving to naamaa.in — find yours.",
+  publisher: {
+    "@type": "Organization",
+    name: "Parinaamaa",
+    url: newSiteUrl,
+  },
+};
 
 const Home = () => (
   <>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+      }}
+    />
+
     <Hero />
 
     {/* Directory + footer */}

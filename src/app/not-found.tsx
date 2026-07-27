@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+// Next already emits `noindex` for not-found — only the title needs setting.
+export const metadata: Metadata = {
+  title: "Page not found",
+};
 
 // Root not-found: Next renders this for any unmatched URL app-wide (with a 404
 // status), so it replaces the old [...slug] catch-all. ellam.in is retired —

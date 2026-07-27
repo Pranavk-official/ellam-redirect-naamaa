@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Merriweather } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
+import { newSiteUrl, siteUrl } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,17 +18,6 @@ const merriweather = Merriweather({
 const title = "ellam.in has moved to naamaa.in";
 const description =
   "Ellam is now part of Parinaamaa. Every temple and service on ellam.in is moving to naamaa.in — find yours.";
-
-// Absolute base for OG / link-preview image URLs. It MUST match the host that
-// actually serves the site, or scrapers fetch og:image from the wrong origin
-// and no preview shows. On Vercel this auto-resolves to the production URL
-// (including a custom domain once added), so it usually needs no config. Set
-// NEXT_PUBLIC_SITE_URL only to override (e.g. non-Vercel hosts).
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "https://ellam.in");
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -51,7 +41,8 @@ export const metadata: Metadata = {
     "ellam moved to naamaa",
     "temple microsite",
   ],
-  alternates: { canonical: "https://naamaa.in" },
+  // Cross-domain canonical: consolidate ranking signals onto the new home.
+  alternates: { canonical: newSiteUrl },
   openGraph: {
     type: "website",
     url: siteUrl,
@@ -67,6 +58,7 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
 };
 

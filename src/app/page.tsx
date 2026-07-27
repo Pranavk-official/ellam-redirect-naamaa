@@ -29,16 +29,11 @@ const Home = () => (
 
     <Hero />
 
-    <section
-      id="find"
-      className="flex scroll-mt-10 justify-center px-6 pb-20 sm:px-10"
-    >
-      <div className="w-full max-w-2xl text-left">
-        {/* <Directory /> */}
-
+    <div className="flex justify-center px-6 pb-16 sm:px-10 sm:pb-20">
+      <div className="w-full max-w-3xl text-left">
         {/* Contact — mirrors naamaa.in/contact */}
-        <section id="contact" className="scroll-mt-10">
-          <h2 className="font-serif text-2xl font-bold tracking-tight text-foreground">
+        <section id="contact" className="scroll-mt-6">
+          <h2 className="font-serif text-xl font-bold tracking-tight text-foreground sm:text-2xl">
             Need help moving?
           </h2>
           <p className="mt-2 text-muted">
@@ -125,7 +120,7 @@ const Home = () => (
           </span>
         </div>
       </div>
-    </section>
+    </div>
   </>
 );
 

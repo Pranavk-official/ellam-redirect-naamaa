@@ -56,13 +56,10 @@ export const Directory = () => {
 
   return (
     // text-left: hero centers its text, rows must not inherit that.
-    <section className="mt-16 pt-12 text-left">
-      <h2 className="font-serif text-2xl font-bold tracking-tight text-foreground">
+    <section id="find" className="mt-12 scroll-mt-6 pt-8 text-left sm:mt-16 sm:pt-12">
+      <h2 className="font-serif text-xl font-bold tracking-tight text-foreground text-center md:text-left">
         Find your temples on naamaa.in
       </h2>
-      {/* <p className="mt-2 text-muted">
-        {`Everything from ellam.in is moving to naamaa.in — ${LIVE} of ${listings.length} live now. Search or sort to find yours.`}
-      </p> */}
 
       <div className="relative mt-6">
         <label htmlFor="dir-search" className="sr-only">

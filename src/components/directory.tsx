@@ -26,21 +26,22 @@ const CATS = CATEGORIES.map((name) => ({
   count: listings.filter((l) => l.category === name).length,
 })).filter((c) => c.count > 0);
 
-const LIVE = listings.filter((l) => l.onboarded).length;
+// Every listing is live on naamaa.in, so the onboarded filter is hidden for now.
+// const LIVE = listings.filter((l) => l.onboarded).length;
 
 type SortKey = "name-asc" | "name-desc";
 
 export const Directory = () => {
   const [query, setQuery] = useState("");
   const [cat, setCat] = useState<string | null>(null);
-  const [onlyOnboarded, setOnlyOnboarded] = useState(false);
+  // const [onlyOnboarded, setOnlyOnboarded] = useState(false);
   const [sort, setSort] = useState<SortKey>("name-asc");
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     const filtered = listings.filter((l) => {
       if (cat && l.category !== cat) return false;
-      if (onlyOnboarded && !l.onboarded) return false;
+      // if (onlyOnboarded && !l.onboarded) return false;
       if (!q) return true;
       return (
         l.name.toLowerCase().includes(q) ||
@@ -52,7 +53,7 @@ export const Directory = () => {
     if (sort === "name-desc")
       return filtered.sort((a, b) => b.name.localeCompare(a.name));
     return filtered.sort((a, b) => a.name.localeCompare(b.name));
-  }, [query, cat, onlyOnboarded, sort]);
+  }, [query, cat, sort]);
 
   return (
     // text-left: hero centers its text, rows must not inherit that.
@@ -108,7 +109,7 @@ export const Directory = () => {
               <Count>{c.count}</Count>
             </FilterPill>
           ))}
-          <span
+          {/* <span
             aria-hidden
             className="mx-1 hidden h-6 w-px self-center bg-border sm:block"
           />
@@ -118,7 +119,7 @@ export const Directory = () => {
           >
             Onboarded
             <Count>{LIVE}</Count>
-          </FilterPill>
+          </FilterPill> */}
         </div>
 
         <label className="flex items-center gap-2 text-sm text-muted sm:shrink-0">

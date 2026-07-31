@@ -27,7 +27,7 @@ export const catalogue: Record<Category, Listing[]> = {
     // { "name": "Aalur Thiruthi Mahavishnu Kshetram", "slug": "aalurthiruthimahavishnu", "location": "Aalur, Thrissur", "onboarded": true },
     { "name": "Alkkalmanna Sri Danwanthari Temple", "slug": "alkkalmannasridanwanthari", "location": "Angadipuram", "onboarded": true },
     { "name": "Angadippuram Sree Manikkapuram Vishnu Temple", "slug": "angadippuramsreemanikkapuram", "location": "Angadippuram", "onboarded": true },
-    { "name": "Aloorkkavu Bagavathi Temple", "slug": "aloorkkavubagavathitemple", "location": "Aloor, Thrissur", "onboarded": true },
+    // { "name": "Aloorkkavu Bagavathi Temple", "slug": "aloorkkavubagavathitemple", "location": "Aloor, Thrissur", "onboarded": true },
     { "name": "Paingarappilly Sreekrishnapuram Kolamkulangarakkavu Temple", "slug": "paingarappillysreekrishnapuram", "location": "Mulanthuruthy, Ernakulam", "onboarded": true },
     { "name": "Sri Vaisravana (Kubera) Mahakshethram", "slug": "srivaisravanakubera", "location": "Cheriyaparappur", "onboarded": true },
     { "name": "Sree Mahalakshmi Temple, Chevoor", "slug": "sreemahalakshmitemple", "location": "Chevoor", "onboarded": true },

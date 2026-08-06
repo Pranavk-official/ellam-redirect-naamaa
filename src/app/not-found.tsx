@@ -7,8 +7,8 @@ export const metadata: Metadata = {
 };
 
 // Root not-found: Next renders this (with a 404 status) for every URL that
-// isn't the landing page and isn't a single slug-shaped segment — [slug] hands
-// those to naamaa.in. So this catches bot probes, file requests and deep paths.
+// isn't the landing page and doesn't end in a slug-shaped segment — [...slug]
+// hands those to naamaa.in. So this catches bot probes and file requests.
 const NotFound = () => (
   <main className="flex min-h-dvh flex-1 flex-col items-center justify-center gap-6 px-6 py-20 text-center">
     <div className="flex items-center gap-3 text-sm font-medium uppercase tracking-widest text-muted">

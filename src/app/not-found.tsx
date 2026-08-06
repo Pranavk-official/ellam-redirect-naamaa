@@ -6,9 +6,9 @@ export const metadata: Metadata = {
   title: "Page not found",
 };
 
-// Root not-found: Next renders this for any unmatched URL app-wide (with a 404
-// status), so it replaces the old [...slug] catch-all. ellam.in is retired —
-// point strays at naamaa.in.
+// Root not-found: Next renders this (with a 404 status) for every URL that
+// isn't the landing page and isn't a single slug-shaped segment — [slug] hands
+// those to naamaa.in. So this catches bot probes, file requests and deep paths.
 const NotFound = () => (
   <main className="flex min-h-dvh flex-1 flex-col items-center justify-center gap-6 px-6 py-20 text-center">
     <div className="flex items-center gap-3 text-sm font-medium uppercase tracking-widest text-muted">

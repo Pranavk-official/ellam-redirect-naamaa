@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { motion } from "motion/react";
-import { listings, CATEGORIES, type CatalogueEntry } from "@/data/catalogue";
+import { CATEGORIES, type CatalogueEntry } from "@/data/catalogue";
 
 const NAAMAA = "https://naamaa.in";
 
@@ -20,28 +20,29 @@ const rowVariants = {
   },
 };
 
-// Service categories that actually have listings, in ellam's order, with counts.
-const CATS = CATEGORIES.map((name) => ({
-  name,
-  count: listings.filter((l) => l.category === name).length,
-})).filter((c) => c.count > 0);
-
-// Every listing is live on naamaa.in, so the onboarded filter is hidden for now.
-// const LIVE = listings.filter((l) => l.onboarded).length;
-
 type SortKey = "name-asc" | "name-desc";
 
-export const Directory = () => {
+// `items` is the catalogue minus the slugs naamaa.in no longer serves — Hero
+// checks that server-side, so a dead link never reaches the list.
+export const Directory = ({ items }: { items: CatalogueEntry[] }) => {
   const [query, setQuery] = useState("");
   const [cat, setCat] = useState<string | null>(null);
-  // const [onlyOnboarded, setOnlyOnboarded] = useState(false);
   const [sort, setSort] = useState<SortKey>("name-asc");
+
+  // Service categories that actually have listings, in ellam's order, with counts.
+  const cats = useMemo(
+    () =>
+      CATEGORIES.map((name) => ({
+        name,
+        count: items.filter((l) => l.category === name).length,
+      })).filter((c) => c.count > 0),
+    [items],
+  );
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const filtered = listings.filter((l) => {
+    const filtered = items.filter((l) => {
       if (cat && l.category !== cat) return false;
-      // if (onlyOnboarded && !l.onboarded) return false;
       if (!q) return true;
       return (
         l.name.toLowerCase().includes(q) ||
@@ -53,7 +54,7 @@ export const Directory = () => {
     if (sort === "name-desc")
       return filtered.sort((a, b) => b.name.localeCompare(a.name));
     return filtered.sort((a, b) => a.name.localeCompare(b.name));
-  }, [query, cat, sort]);
+  }, [items, query, cat, sort]);
 
   return (
     // text-left: hero centers its text, rows must not inherit that.
@@ -97,9 +98,9 @@ export const Directory = () => {
         >
           <FilterPill active={cat === null} onClick={() => setCat(null)}>
             All
-            <Count>{listings.length}</Count>
+            <Count>{items.length}</Count>
           </FilterPill>
-          {CATS.map((c) => (
+          {cats.map((c) => (
             <FilterPill
               key={c.name}
               active={cat === c.name}
@@ -109,17 +110,6 @@ export const Directory = () => {
               <Count>{c.count}</Count>
             </FilterPill>
           ))}
-          {/* <span
-            aria-hidden
-            className="mx-1 hidden h-6 w-px self-center bg-border sm:block"
-          />
-          <FilterPill
-            active={onlyOnboarded}
-            onClick={() => setOnlyOnboarded((v) => !v)}
-          >
-            Onboarded
-            <Count>{LIVE}</Count>
-          </FilterPill> */}
         </div>
 
         <label className="flex items-center gap-2 text-sm text-muted sm:shrink-0">
